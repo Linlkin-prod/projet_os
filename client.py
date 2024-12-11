@@ -1,22 +1,22 @@
 import socket
+import random
+import time
 
-# Configurer le serveur
-HOST = '0.0.0.0'  # Écoute sur toutes les interfaces réseau
-PORT = 12345       # Port d'écoute
+SERVER_IP = "192.168.0.1"  # Nom du service Docker
+SERVER_PORT = 12345
+CHOICES = ["pierre", "papier", "ciseaux"]
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-    server_socket.bind((HOST, PORT))
-    server_socket.listen()
-    print(f"Server listening on {HOST}:{PORT}")
+def play_game():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+        client.connect((SERVER_IP, SERVER_PORT))
+        print("Connecté au serveur")
+        while response != "fin":
+            choice = random.choice(CHOICES)
+            client.send(choice.encode())
+            print(f"Choix envoyé : {choice}")
+            response = client.recv(1024).decode()
+            print(f"Réponse du serveur : {response}")
+            time.sleep(5)  # Attente avant le prochain choix
 
-    while True:
-        client_socket, client_address = server_socket.accept()
-        with client_socket:
-            print(f"Connection from {client_address}")
-            client_socket.sendall(b"Hello, client! Type your message.\n")
-            while True:
-                data = client_socket.recv(1024)
-                if not data:
-                    break
-                print(f"Received: {data.decode()}")
-                client_socket.sendall(b"Echo: " + data)
+if __name__ == "__main__":
+    play_game()
