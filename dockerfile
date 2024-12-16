@@ -1,14 +1,16 @@
-# Utilise une image Python officielle comme base
 FROM python:3.9-slim
 
-# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier le fichier serveur dans le conteneur
 COPY server.py .
+COPY requirements.txt .
 
-# Exposer le port pour le serveur TCP
+RUN pip install --no-cache-dir -r requirements.txt
+
 EXPOSE 12345
 
-# Commande à exécuter lors du lancement du conteneur
+HEALTHCHECK --interval=30s --timeout=10s CMD nc -z localhost 12345 || exit 1
+
+RUN chmod +x server.py
+
 CMD ["python", "server.py"]
