@@ -10,6 +10,7 @@ def play_game():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
         client.connect((SERVER_IP, SERVER_PORT))
         print("Connecté au serveur")
+        response = ""  # Initialisation de la variable response
         while response != "fin":
             choice = random.choice(CHOICES)
             client.send(choice.encode())
