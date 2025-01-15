@@ -1,0 +1,36 @@
+services:
+  serveur:
+    container_name: serveur
+    build: /serveur
+    ports:
+      - "12345:12345"
+    networks:
+      - projetos
+    
+  client1:
+    container_name: client1
+    #depends_on:
+    #    serveur:
+    #        condition: service_healthy
+    #        restart: True
+    build: /client
+    #ports:
+    #  - "12346:12346"
+    networks:
+      - projetos
+
+  client2:
+    container_name: client2
+    #depends_on:
+    #    serveur:
+    #        condition: service_healthy
+    #        restart: True
+    build: /client
+    #ports:
+    #  - "12347:12347"
+    networks:
+      - projetos
+
+networks:
+  projetos:
+    driver: bridge
