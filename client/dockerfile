@@ -1,8 +1,14 @@
 FROM python:3.9-slim
 
-COPY client1.py /app/client1.py
 WORKDIR /app
 
-EXPOSE 12345
+COPY client.py .
+COPY requirements.txt .
 
-CMD ["python", "client1.py"]
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+HEALTHCHECK --interval=30s --timeout=10s CMD nc -z localhost 12345
+
+
+CMD ["python", "client.py"]
