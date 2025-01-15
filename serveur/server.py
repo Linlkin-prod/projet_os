@@ -1,6 +1,8 @@
 import socket
 import threading
 
+
+
 # Dictionnaire pour stocker les connexions des clients et leurs choix
 clients = {}
 
